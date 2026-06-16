@@ -16,23 +16,26 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
-    // Public authentication endpoints.
-    Route::prefix('auth')->group(function () {
+    // Public authentication endpoints (rate-limited to deter brute force).
+    Route::prefix('auth')->middleware('throttle:10,1')->group(function () {
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/login', [AuthController::class, 'login']);
     });
 
     // Authenticated endpoints (Sanctum token required).
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware(['auth:sanctum', 'throttle:120,1'])->group(function () {
 
         Route::prefix('auth')->group(function () {
             Route::get('/me', [AuthController::class, 'me']);
             Route::post('/logout', [AuthController::class, 'logout']);
         });
 
-        // Auto-load every module route file in routes/api/*.php.
-        foreach (glob(__DIR__.'/api/*.php') as $moduleRoutes) {
-            require $moduleRoutes;
-        }
+        // Feature modules: every request is authorized against a
+        // {resource}.{action} permission (fail-closed) and audit-logged.
+        Route::middleware(['api.permission', 'api.audit'])->group(function () {
+            foreach (glob(__DIR__.'/api/*.php') as $moduleRoutes) {
+                require $moduleRoutes;
+            }
+        });
     });
 });

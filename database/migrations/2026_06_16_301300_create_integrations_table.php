@@ -14,7 +14,8 @@ return new class extends Migration
             $table->string('type');
             $table->boolean('is_enabled')->default(false);
             $table->string('status')->default('available');
-            $table->json('credentials')->nullable();
+            // Stored encrypted (see Integration model cast) — ciphertext, not JSON.
+            $table->text('credentials')->nullable();
             $table->timestamps();
         });
     }

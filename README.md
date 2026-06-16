@@ -132,13 +132,27 @@ return `{ "success": false, "message": "...", "errors": { ... } }` with the
 appropriate status (401 unauthenticated, 403 forbidden, 404 not found, 422
 validation).
 
-### Roles & permissions
+### Security & access control
 
-Access control uses **Spatie Laravel Permission**. The seeder creates roles
-(`super-admin`, `admin`, `accountant`, `teacher`, `librarian`, `student`) and a
-`{module}.{action}` permission set. `super-admin` is granted everything via a
-`Gate::before` bypass. The seeded admin (`admin@erp.test` / `password`) is a
-super-admin.
+Access control uses **Spatie Laravel Permission**, enforced on every module
+endpoint:
+
+- **RBAC, fail-closed**: each route requires a `{resource}.{action}` permission
+  (`view/create/edit/delete`). The `EnsureApiPermission` middleware denies (403)
+  unless the user holds the ability; `super-admin` bypasses via `Gate::before`.
+  Authorization runs *before* route-model binding (no 404 existence leaks).
+- **10 roles**: `super-admin`, `admin`, `hod`, `teacher`, `accountant`,
+  `librarian`, `transport-manager`, `hostel-warden`, `student`, `parent`.
+- **Encrypted secrets**: integration credentials and `two_factor_secret` are
+  encrypted at rest and masked (`********`) in API responses; sensitive settings
+  are masked too.
+- **Audit logging**: every successful write is recorded to `activity_logs` with
+  a sanitized payload (secrets redacted).
+- **Rate limiting**: `throttle:10,1` on auth endpoints, `throttle:120,1` on the
+  authenticated API.
+
+The seeded admin (`admin@erp.test` / `password`) is a super-admin. See
+`documentation.md` §15 for the full security model.
 
 ## Development Tools
 

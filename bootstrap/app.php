@@ -19,12 +19,21 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Spatie permission middleware aliases for route-level RBAC.
+        // Spatie permission middleware aliases + ERP API guards for RBAC and auditing.
         $middleware->alias([
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+            'api.permission' => \App\Http\Middleware\EnsureApiPermission::class,
+            'api.audit' => \App\Http\Middleware\AuditApiActions::class,
         ]);
+
+        // Authorize BEFORE route-model binding so a denied user gets 403 and
+        // never triggers a 404 that would leak whether a record exists.
+        $middleware->prependToPriorityList(
+            before: \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            prepend: \App\Http\Middleware\EnsureApiPermission::class,
+        );
     })
     ->withExceptions(function (Exceptions $exceptions) {
         // Render a consistent JSON envelope for API requests.

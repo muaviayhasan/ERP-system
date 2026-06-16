@@ -446,4 +446,59 @@ All modules must work together through shared services like:
 
 ---
 
+## 15. Implementation Notes — Security Model (Backend)
+
+This appendix documents how the §10 security requirements are enforced in the
+Laravel backend. See `docs/SCHEMA.md` for the data model and `README.md` for the
+full API reference.
+
+### 15.1 Authentication
+- Laravel **Sanctum** bearer tokens. All endpoints except `POST /api/v1/auth/login`
+  and `/register` require `Authorization: Bearer <token>`.
+- Unauthenticated API requests return `401` with a JSON envelope.
+- Login/register are rate-limited (`throttle:10,1`); authenticated traffic is
+  capped at `throttle:120,1` to blunt brute-force and abuse.
+
+### 15.2 Authorization (Role-Based Access Control)
+- **Spatie Laravel Permission**. Permissions follow `{resource}.{action}` where
+  action ∈ `view|create|edit|delete` (280 permissions across 70 resources).
+- 10 roles: `super-admin`, `admin`, `hod`, `teacher`, `accountant`, `librarian`,
+  `transport-manager`, `hostel-warden`, `student`, `parent`.
+- The `EnsureApiPermission` middleware derives the required ability from the
+  route name and is **fail-closed**: if the user lacks the ability (or it can't
+  be determined) the request is denied `403`.
+- Authorization runs **before** route-model binding (middleware priority), so a
+  denied request never reveals whether a record exists (403, not 404).
+- `super-admin` is granted everything via a `Gate::before` bypass.
+
+### 15.3 Encrypted Sensitive Data
+- Integration credentials (API keys/secrets) are stored **encrypted at rest**
+  (`encrypted:array` cast) — never plaintext in the database.
+- User `two_factor_secret` is encrypted; `password` is hashed; both are hidden
+  from serialization.
+- API responses **mask** secrets: integration credentials are returned as
+  `********`, and settings whose key contains `password/secret/token/api_key/…`
+  are masked in `SettingResource`.
+
+### 15.4 Audit Logging
+- The `AuditApiActions` middleware records every successful mutating request
+  (POST/PUT/PATCH/DELETE → 2xx) to `activity_logs`: actor, role, module, action,
+  IP, device, and a **sanitized** payload (passwords/secrets/tokens redacted).
+
+### 15.5 Input & Mass-Assignment Safety
+- Every write goes through a FormRequest; controllers persist only
+  `$request->validated()` data (no `$request->all()` mass assignment).
+- Foreign keys are validated with `exists:` rules; enums with `in:` rules.
+
+### 15.6 Transport / CORS
+- CORS is scoped to `api/*`; token auth means no cookie credentials are shared
+  (`supports_credentials = false`). Restrict `allowed_origins` per environment
+  before production.
+
+> Validation: the RBAC matrix, secret masking, encryption-at-rest, audit
+> logging, and 401/403 behavior are exercised by isolated-process integration
+> checks against the booted HTTP kernel.
+
+---
+
 END OF DOCUMENT

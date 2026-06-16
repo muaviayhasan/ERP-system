@@ -12,7 +12,8 @@ class Integration extends Model
     {
         return [
             'is_enabled' => 'boolean',
-            'credentials' => 'array',
+            // Encrypted at rest so API keys/secrets are never stored in plaintext.
+            'credentials' => 'encrypted:array',
         ];
     }
 }
