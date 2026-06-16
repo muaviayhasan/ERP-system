@@ -1,13 +1,13 @@
-import './bootstrap';            // axios + global jQuery (must run before Select2)
+import './bootstrap';            // axios + global jQuery (must run before plugins)
 
-import 'select2';                 // extends jQuery
-import Inputmask from 'inputmask';
+import 'jquery-mask-plugin';      // $.fn.mask
+import 'select2';                 // $.fn.select2 (CSS is bundled via app.css)
+
 import Alpine from 'alpinejs';
 import collapse from '@alpinejs/collapse';
 import { initErpForms } from './erp-forms';
 
-// Globals used by Blade/erp-forms.
-window.Inputmask = Inputmask;
+// Globals used by Blade.
 window.Alpine = Alpine;
 window.ErpForms = { init: initErpForms };
 

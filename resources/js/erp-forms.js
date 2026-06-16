@@ -59,11 +59,24 @@ function initSelect2(root) {
 }
 
 function initMasks(root) {
-    if (!window.Inputmask) return;
-    window.Inputmask({ mask: '99999-9999999-9', placeholder: '_', clearIncomplete: true })
-        .mask(root.querySelectorAll('[data-mask="cnic"]'));
-    window.Inputmask({ mask: '0399-9999999', placeholder: '_', clearIncomplete: true })
-        .mask(root.querySelectorAll('[data-mask="phone"]'));
+    const $ = window.jQuery;
+    if (!$ || !$.fn || !$.fn.mask) return;
+
+    // CNIC: 32301-0000000-0  (0 = digit in jquery-mask-plugin)
+    $(root).find('[data-mask="cnic"]').mask('00000-0000000-0');
+
+    // Pakistani mobile: 0300-0000000. The "03" prefix is pre-filled so the
+    // field always starts correctly.
+    $(root).find('[data-mask="phone"]').each(function () {
+        const field = this;
+        $(field).mask('0000-0000000');
+        const ensurePrefix = () => {
+            if (!field.value) {
+                field.value = '03';
+            }
+        };
+        field.addEventListener('focus', ensurePrefix);
+    });
 }
 
 function initCounters(root) {

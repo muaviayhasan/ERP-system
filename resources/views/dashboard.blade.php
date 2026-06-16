@@ -22,15 +22,15 @@
     {{-- KPI row (layout placeholders) --}}
     <div class="mb-lg grid grid-cols-1 gap-md sm:grid-cols-2 lg:grid-cols-4">
         @foreach ([
-            ['label' => 'Total Students', 'value' => '—', 'icon' => 'groups', 'tone' => 'primary'],
-            ['label' => 'Total Staff', 'value' => '—', 'icon' => 'badge', 'tone' => 'tertiary'],
-            ['label' => 'Fees Collected', 'value' => '—', 'icon' => 'payments', 'tone' => 'primary'],
-            ['label' => 'Pending Dues', 'value' => '—', 'icon' => 'warning', 'tone' => 'error'],
+            ['label' => 'Total Students', 'value' => '—', 'icon' => 'groups', 'icon_classes' => 'bg-primary/10 text-primary'],
+            ['label' => 'Total Staff', 'value' => '—', 'icon' => 'badge', 'icon_classes' => 'bg-tertiary/10 text-tertiary'],
+            ['label' => 'Fees Collected', 'value' => '—', 'icon' => 'payments', 'icon_classes' => 'bg-primary/10 text-primary'],
+            ['label' => 'Pending Dues', 'value' => '—', 'icon' => 'warning', 'icon_classes' => 'bg-error/10 text-error'],
         ] as $kpi)
             <div class="rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm">
                 <div class="mb-2 flex items-start justify-between">
                     <span class="text-label-sm uppercase tracking-wider text-on-surface-variant">{{ $kpi['label'] }}</span>
-                    <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-{{ $kpi['tone'] }}/10 text-{{ $kpi['tone'] }}">
+                    <div class="flex h-8 w-8 items-center justify-center rounded-lg {{ $kpi['icon_classes'] }}">
                         <span class="material-symbols-outlined text-[20px]">{{ $kpi['icon'] }}</span>
                     </div>
                 </div>
