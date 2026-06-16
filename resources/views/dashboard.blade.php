@@ -95,5 +95,16 @@
                        class="w-full rounded-lg border border-outline-variant px-md py-2 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"/>
             </div>
         </div>
+
+        {{-- Drag-and-drop file upload component --}}
+        <div class="mt-lg border-t border-outline-variant pt-lg">
+            <x-file-drop
+                name="documents"
+                label="Upload Documents"
+                :multiple="true"
+                accept="image/*,.pdf"
+                :max-mb="5"
+            />
+        </div>
     </div>
 @endsection
