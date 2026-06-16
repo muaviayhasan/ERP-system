@@ -27,7 +27,7 @@ class StoreFeePaymentRequest extends FormRequest
             'reference_number' => ['nullable', 'string', 'max:255'],
             'auto_allocate_installments' => ['nullable', 'boolean'],
             'collected_by' => ['nullable', 'integer', 'exists:users,id'],
-            'paid_at' => ['required', 'date'],
+            'paid_at' => ['nullable', 'date'], // defaults to now() in FeePaymentService
             'status' => ['nullable', 'string', 'max:255'],
         ];
     }

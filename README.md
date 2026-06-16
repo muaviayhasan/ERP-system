@@ -159,6 +159,35 @@ The seeded admin (`admin@erp.test` / `password`) is a super-admin. See
 - **Telescope**: available at `/telescope` (local environment).
 - **Debugbar**: rendered automatically when `APP_DEBUG=true`.
 
+## Business workflows (service layer)
+
+Per `documentation.md` §12, non-trivial logic lives in services, not
+controllers:
+
+- **`FeePaymentService`** — recording a payment is one atomic DB transaction:
+  it persists the payment, issues a receipt, updates the student fee
+  assignment balances/status, applies to the installment, posts a **credit to
+  the fee ledger** (the financial source of truth), and refreshes the pending
+  fee. `POST /api/v1/fee-payments` delegates to it.
+- **`AttendanceService`** — marking attendance recomputes the student's rate
+  for the class and raises, updates, or clears the **low-attendance alert**
+  against the institute's required threshold. `POST /api/v1/attendances`
+  delegates to it.
+
+## Testing
+
+A PHPUnit feature suite runs against an in-memory SQLite database
+(`phpunit.xml`) and locks in the security model and workflows:
+
+```bash
+php artisan test
+```
+
+Covers: authentication + token issuance, the **RBAC matrix** (per-role
+allow/deny, fail-closed, authorize-before-binding), **secret encryption &
+masking**, **audit logging** (including secret redaction), and the **fee-payment
+→ ledger** and **attendance → alert** workflows.
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the

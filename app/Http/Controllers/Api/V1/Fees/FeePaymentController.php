@@ -7,11 +7,16 @@ use App\Http\Requests\Fee\StoreFeePaymentRequest;
 use App\Http\Requests\Fee\UpdateFeePaymentRequest;
 use App\Http\Resources\FeePaymentResource;
 use App\Models\FeePayment;
+use App\Services\Fees\FeePaymentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class FeePaymentController extends ApiController
 {
+    public function __construct(private readonly FeePaymentService $payments)
+    {
+    }
+
     protected array $filterable = ['status', 'student_id', 'student_fee_assignment_id', 'fee_installment_id', 'receipt_id', 'payment_method', 'collected_by'];
     protected array $searchable = ['transaction_id', 'reference_number'];
     protected array $sortable = ['id', 'amount_paid', 'paid_at', 'created_at'];
@@ -29,9 +34,11 @@ class FeePaymentController extends ApiController
 
     public function store(StoreFeePaymentRequest $request): JsonResponse
     {
-        $feePayment = FeePayment::create($request->validated());
+        // Business logic lives in the service: the payment is recorded
+        // atomically with its receipt, ledger entry, and balance updates.
+        $feePayment = $this->payments->record($request->validated(), $request->user()?->id);
 
-        return $this->respondCreated(FeePaymentResource::make($feePayment), 'Fee payment created successfully.');
+        return $this->respondCreated(FeePaymentResource::make($feePayment), 'Fee payment recorded successfully.');
     }
 
     public function show(FeePayment $feePayment): JsonResponse
