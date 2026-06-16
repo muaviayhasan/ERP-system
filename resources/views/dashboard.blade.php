@@ -106,5 +106,14 @@
                 :max-mb="5"
             />
         </div>
+
+        {{-- Livewire round-trip demo (reactive, no page reload) --}}
+        <div class="mt-lg flex flex-wrap items-center justify-between gap-md border-t border-outline-variant pt-lg">
+            <div>
+                <p class="font-bold text-on-surface">Livewire is ready</p>
+                <p class="text-label-sm text-on-surface-variant">Reactive components without a page reload — demo counter:</p>
+            </div>
+            <livewire:counter />
+        </div>
     </div>
 @endsection

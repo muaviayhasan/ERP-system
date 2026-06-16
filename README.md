@@ -77,11 +77,16 @@ panel at `http://127.0.0.1:8000/dashboard`.
 
 ## Front-end assets
 
-The admin panel UI is built with **Tailwind CSS via Vite**. Source lives in
-`resources/css/app.css`, `resources/js/app.js` (which bundles Alpine.js, jQuery,
-Select2, Inputmask, and the form helpers), and `tailwind.config.js` (design
-tokens). Build with `npm run build`, or run `npm run dev` for hot reloading
-during development. Compiled output goes to `public/build/` (git-ignored).
+The admin panel UI is built with **Tailwind CSS v4 + Vite**, **Livewire 4** (interactive
+components), **Alpine** (provided by Livewire), and **jQuery + Select2 + jquery-mask-plugin**
+(form enhancements). Source lives in `resources/css/app.css` (tokens in `@theme`) and
+`resources/js/app.js` (jQuery/Select2/masks + form helpers — Alpine is loaded by Livewire,
+not bundled here). Build with `npm run build`, or `npm run dev` for hot reloading.
+Compiled output goes to `public/build/` (git-ignored).
+
+Build interactive screens as **Livewire components** (`app/Livewire`, views in
+`resources/views/livewire`). Note: inside a Livewire component, wrap jQuery/Select2 markup
+in `wire:ignore` and re-init via `window.ErpForms.init(el)` on Livewire updates.
 
 ## Queue Worker
 

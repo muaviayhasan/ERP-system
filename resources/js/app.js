@@ -3,17 +3,12 @@ import './bootstrap';            // axios + global jQuery (must run before plugi
 import 'jquery-mask-plugin';      // $.fn.mask
 import 'select2';                 // $.fn.select2 (CSS is bundled via app.css)
 
-import Alpine from 'alpinejs';
-import collapse from '@alpinejs/collapse';
 import { initErpForms } from './erp-forms';
 
-// Globals used by Blade.
-window.Alpine = Alpine;
+// Alpine is provided by Livewire (loaded via @livewireScripts) — we do NOT
+// import/start our own Alpine here to avoid a double Alpine instance. Livewire
+// 4 bundles Alpine + the collapse plugin used by the sidebar.
 window.ErpForms = { init: initErpForms };
 
-Alpine.plugin(collapse);
-
-// Enhance forms once the DOM is ready, then start Alpine.
+// Enhance Select2 / input masks once the DOM is ready.
 document.addEventListener('DOMContentLoaded', () => initErpForms(document));
-
-Alpine.start();
