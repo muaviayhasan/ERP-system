@@ -17,13 +17,24 @@
         window.jQuery(root).find('select:not([data-no-select2])').each(function () {
             var $el = window.jQuery(this);
             if ($el.data('select2')) return; // already initialised
+
+            // Anchor the dropdown to an explicit container (drawer/modal) or to
+            // the field's own wrapper. Appending to <body> triggers a Select2
+            // 4.1-rc positioning bug (dropdown renders at the page corner), so
+            // we never do that. The parent must be positioned for correct offset.
+            var $parent = $el.closest('[data-select2-parent]');
+            if (!$parent.length) {
+                $parent = $el.parent();
+                if ($parent.css('position') === 'static') {
+                    $parent.css('position', 'relative');
+                }
+            }
+
             $el.select2({
                 width: '100%',
                 placeholder: this.getAttribute('placeholder') || '',
                 allowClear: this.hasAttribute('data-allow-clear'),
-                dropdownParent: $el.closest('[data-select2-parent]').length
-                    ? $el.closest('[data-select2-parent]')
-                    : window.jQuery(document.body),
+                dropdownParent: $parent,
             });
         });
     }

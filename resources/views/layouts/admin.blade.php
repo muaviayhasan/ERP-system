@@ -10,7 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     {{-- Select2 (searchable selects) --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-    <link href="{{ asset('css/erp-forms.css') }}" rel="stylesheet"/>
+    @php $erpCssVer = @filemtime(public_path('css/erp-forms.css')) ?: 1; @endphp
+    <link href="{{ asset('css/erp-forms.css') }}?v={{ $erpCssVer }}" rel="stylesheet"/>
 
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -103,7 +104,8 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.9/dist/inputmask.min.js"></script>
-    <script src="{{ asset('js/erp-forms.js') }}"></script>
+    @php $erpJsVer = @filemtime(public_path('js/erp-forms.js')) ?: 1; @endphp
+    <script src="{{ asset('js/erp-forms.js') }}?v={{ $erpJsVer }}"></script>
 
     @stack('scripts')
 </body>

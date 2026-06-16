@@ -1,0 +1,15 @@
+Fix Select2 dropdown positioning + styling in admin panel
+
+The Select2 dropdown rendered at the page corner unstyled because it was
+appended to body (a known Select2 4.1-rc positioning bug).
+
+- erp-forms.js: anchor the dropdown to the field's own wrapper (set position
+  relative) instead of body; honor data-select2-parent for drawers/modals.
+- erp-forms.css: proper dropdown panel (shadow, rounded, z-index, option
+  padding/hover, selected + placeholder + clear styling) matching the theme.
+- admin layout: cache-bust erp-forms.css/js via filemtime so the fix loads
+  without a hard refresh.
+
+Verified render: 200, dropdown anchored to wrapper, body-append removed.
+
+Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
