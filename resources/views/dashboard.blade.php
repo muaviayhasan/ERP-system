@@ -68,4 +68,32 @@
             </div>
         </div>
     </div>
+
+    {{-- Form components preview: Select2 + input masks (verifies the install) --}}
+    <div class="mt-lg rounded-xl border border-outline-variant bg-surface-container-lowest p-lg shadow-sm">
+        <h3 class="mb-1 font-headline-md text-headline-md text-on-surface">Form Components</h3>
+        <p class="mb-md text-body-md text-on-surface-variant">Select2 on all selects, with CNIC &amp; phone input masks — applied automatically.</p>
+        <div class="grid grid-cols-1 gap-md md:grid-cols-3">
+            <div class="space-y-1">
+                <label class="text-label-sm font-bold text-on-surface-variant">Campus (Select2)</label>
+                <select data-allow-clear placeholder="Select a campus...">
+                    <option></option>
+                    <option>Main Campus</option>
+                    <option>North Wing</option>
+                    <option>East Side Extension</option>
+                    <option>City Campus</option>
+                </select>
+            </div>
+            <div class="space-y-1">
+                <label class="text-label-sm font-bold text-on-surface-variant">CNIC</label>
+                <input type="text" data-mask="cnic" maxlength="15" placeholder="32301-0000000-0"
+                       class="w-full rounded-lg border border-outline-variant px-md py-2 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"/>
+            </div>
+            <div class="space-y-1">
+                <label class="text-label-sm font-bold text-on-surface-variant">Phone</label>
+                <input type="text" data-mask="phone" maxlength="12" placeholder="0300-0000000"
+                       class="w-full rounded-lg border border-outline-variant px-md py-2 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"/>
+            </div>
+        </div>
+    </div>
 @endsection
