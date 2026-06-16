@@ -78,22 +78,67 @@ The queue uses the `database` driver. To process jobs:
 php artisan queue:work
 ```
 
-## API Endpoints
+## API
 
-All routes are versioned under `/api/v1`.
-
-| Method | Endpoint             | Auth          | Description                  |
-|--------|----------------------|---------------|------------------------------|
-| POST   | `/auth/register`     | Public        | Register a user, return token |
-| POST   | `/auth/login`        | Public        | Log in, return token         |
-| GET    | `/auth/me`           | `auth:sanctum`| Current authenticated user   |
-| POST   | `/auth/logout`       | `auth:sanctum`| Revoke the current token     |
-
-Authenticated requests must send the token as a Bearer header:
+All routes are versioned under `/api/v1`. Public auth endpoints aside, every
+endpoint requires a Sanctum bearer token:
 
 ```
 Authorization: Bearer <token>
 ```
+
+### Authentication
+
+| Method | Endpoint         | Auth          | Description                   |
+|--------|------------------|---------------|-------------------------------|
+| POST   | `/auth/register` | Public        | Register a user, return token |
+| POST   | `/auth/login`    | Public        | Log in, return token          |
+| GET    | `/auth/me`       | `auth:sanctum`| Current authenticated user    |
+| POST   | `/auth/logout`   | `auth:sanctum`| Revoke the current token      |
+
+### Resource modules
+
+The system exposes ~65 resourceful endpoints (`index`/`store`/`show`/`update`/
+`destroy`) across the ERP modules — students, guardians, teachers, staff,
+academic structure (campuses, departments, programs, courses, subjects, classes,
+sections, batches, semesters, academic years), attendance, assignments,
+homeworks, study materials, timetables, exams, results, fees, scholarships,
+fines, refunds, accounting (expenses/income/ledger), library, transport, hostel,
+notices, reports, settings, users, and roles.
+
+Module routes live in `routes/api/*.php` and are auto-loaded inside the
+authenticated `v1` group. Example (students):
+
+```
+GET    /api/v1/students            # paginated list
+POST   /api/v1/students            # create
+GET    /api/v1/students/{id}       # show
+PUT    /api/v1/students/{id}       # update
+DELETE /api/v1/students/{id}       # delete
+```
+
+**Query params on list endpoints**: `?search=`, `?per_page=` (max 100),
+`?sort=column` / `?sort=-column` (desc), `?with=relation1,relation2`, plus
+exact-match filters per resource (e.g. `?status=active&campus_id=1`).
+
+**Response envelope** (consistent across the API):
+
+```json
+{ "success": true, "message": "...", "data": { ... } }
+```
+
+List responses additionally include `links` and `meta` (pagination). Errors
+return `{ "success": false, "message": "...", "errors": { ... } }` with the
+appropriate status (401 unauthenticated, 403 forbidden, 404 not found, 422
+validation).
+
+### Roles & permissions
+
+Access control uses **Spatie Laravel Permission**. The seeder creates roles
+(`super-admin`, `admin`, `accountant`, `teacher`, `librarian`, `student`) and a
+`{module}.{action}` permission set. `super-admin` is granted everything via a
+`Gate::before` bypass. The seeded admin (`admin@erp.test` / `password`) is a
+super-admin.
 
 ## Development Tools
 

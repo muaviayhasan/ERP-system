@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
         );
 
         $this->call([
+            // 0. Roles & permissions (assigns super-admin to the admin user).
+            RolePermissionSeeder::class,
             // 1. Academic foundation (campuses, programs, semesters, classes...).
             AcademicStructureSeeder::class,
             // 2. People who are referenced by students/attendance/exams.

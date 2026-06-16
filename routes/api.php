@@ -8,10 +8,9 @@ use Illuminate\Support\Facades\Route;
 | API Routes (v1)
 |--------------------------------------------------------------------------
 |
-| All API routes are versioned under the "v1" prefix. Future ERP modules
-| should register their own route groups here (or via the Modules folder)
-| inside the authenticated group below. Keep this file clean — no business
-| logic, only route definitions.
+| All API routes are versioned under the "v1" prefix. Public auth endpoints
+| live here; every feature module registers its own routes file under
+| routes/api/ and is auto-loaded inside the authenticated group below.
 |
 */
 
@@ -31,16 +30,9 @@ Route::prefix('v1')->group(function () {
             Route::post('/logout', [AuthController::class, 'logout']);
         });
 
-        /*
-        |----------------------------------------------------------------------
-        | Module route groups (empty placeholders)
-        |----------------------------------------------------------------------
-        | Register feature/module routes below as the ERP grows.
-        */
-
-        // Route::prefix('students')->group(base_path('routes/modules/students.php'));
-        // Route::prefix('staff')->group(base_path('routes/modules/staff.php'));
-        // Route::prefix('academics')->group(base_path('routes/modules/academics.php'));
-
+        // Auto-load every module route file in routes/api/*.php.
+        foreach (glob(__DIR__.'/api/*.php') as $moduleRoutes) {
+            require $moduleRoutes;
+        }
     });
 });
