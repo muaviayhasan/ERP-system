@@ -179,8 +179,8 @@ return [
             ['label' => 'Languages', 'icon' => 'language'],
             ['label' => 'Currencies', 'icon' => 'paid'],
             ['label' => 'Activity Logs', 'icon' => 'history'],
-            ['label' => 'Users', 'icon' => 'manage_accounts'],
-            ['label' => 'Roles & Permissions', 'icon' => 'admin_panel_settings'],
+            ['label' => 'Users', 'icon' => 'manage_accounts', 'route' => 'users.index'],
+            ['label' => 'Roles & Permissions', 'icon' => 'admin_panel_settings', 'route' => 'roles.index'],
         ],
     ],
 ];

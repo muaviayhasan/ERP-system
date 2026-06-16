@@ -32,6 +32,7 @@
         @include('partials.header')
 
         <div class="flex-1 p-lg">
+            @include('partials.flash')
             @yield('content')
         </div>
 

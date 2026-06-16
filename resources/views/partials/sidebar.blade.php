@@ -82,7 +82,8 @@
             <span class="material-symbols-outlined">help</span>
             <span class="font-label-md text-label-md">Help &amp; Docs</span>
         </a>
-        <form method="POST" action="#" onsubmit="return false;">
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
             <button type="submit" class="flex w-full items-center gap-md rounded-lg px-md py-sm text-on-surface-variant transition-colors hover:bg-surface-container-high">
                 <span class="material-symbols-outlined">logout</span>
                 <span class="font-label-md text-label-md">Sign Out</span>

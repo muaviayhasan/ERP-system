@@ -8,12 +8,12 @@ use Tests\TestCase;
 class ExampleTest extends TestCase
 {
     /**
-     * A basic test example.
+     * The root path redirects guests toward the dashboard (which in turn
+     * requires authentication), and the login screen is reachable.
      */
-    public function test_the_application_returns_a_successful_response(): void
+    public function test_the_application_redirects_and_login_is_reachable(): void
     {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
+        $this->get('/')->assertRedirect(route('dashboard'));
+        $this->get('/login')->assertOk();
     }
 }
