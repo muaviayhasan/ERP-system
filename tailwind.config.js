@@ -93,7 +93,10 @@ export default {
         },
     },
     plugins: [
-        forms,
+        // 'class' strategy: only style elements that opt in with form-* classes,
+        // so the plugin doesn't globally restyle third-party widgets (Select2's
+        // internal search input was getting a stray blue focus bar otherwise).
+        forms({ strategy: 'class' }),
         containerQueries,
     ],
 };
