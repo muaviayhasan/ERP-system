@@ -70,6 +70,10 @@
 
 .select2-container--default .select2-results__options { max-height: 260px; }
 
+/* Hide the empty placeholder <option></option> if it leaks into the results
+   list (it would otherwise render as a blank highlighted blue row). */
+.select2-container--default .select2-results__option:empty { display: none; }
+
 .select2-container--default .select2-results__option {
     padding: 0.5rem 0.75rem;
     font-size: 14px;

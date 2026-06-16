@@ -27,12 +27,20 @@ function initSelect2(root) {
             }
         }
 
-        $el.select2({
+        const config = {
             width: '100%',
-            placeholder: this.getAttribute('placeholder') || '',
             allowClear: this.hasAttribute('data-allow-clear'),
             dropdownParent: $parent,
-        });
+        };
+
+        // Only set a placeholder when one is provided, so Select2 treats the
+        // empty <option> as the placeholder (and keeps it out of the results).
+        const placeholder = this.getAttribute('placeholder');
+        if (placeholder) {
+            config.placeholder = placeholder;
+        }
+
+        $el.select2(config);
     });
 }
 
