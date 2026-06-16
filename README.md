@@ -64,11 +64,24 @@ php artisan migrate
 # 7. Link the storage directory
 php artisan storage:link
 
-# 8. Start the development server
+# 8. Install front-end dependencies and build assets (Vite + Tailwind)
+npm install
+npm run build          # production build  (use `npm run dev` while developing)
+
+# 9. Start the development server
 php artisan serve
 ```
 
-The API is then available at `http://127.0.0.1:8000/api/v1`.
+The API is then available at `http://127.0.0.1:8000/api/v1`, and the admin
+panel at `http://127.0.0.1:8000/dashboard`.
+
+## Front-end assets
+
+The admin panel UI is built with **Tailwind CSS via Vite**. Source lives in
+`resources/css/app.css`, `resources/js/app.js` (which bundles Alpine.js, jQuery,
+Select2, Inputmask, and the form helpers), and `tailwind.config.js` (design
+tokens). Build with `npm run build`, or run `npm run dev` for hot reloading
+during development. Compiled output goes to `public/build/` (git-ignored).
 
 ## Queue Worker
 
