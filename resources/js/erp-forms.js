@@ -31,6 +31,20 @@ function initSelect2(root) {
             width: '100%',
             allowClear: this.hasAttribute('data-allow-clear'),
             dropdownParent: $parent,
+            // Show the search box only for longer lists (avoids an empty bar on
+            // short selects); searchable when it actually helps.
+            minimumResultsForSearch: 8,
+            // Drop the empty placeholder <option> from the results list so it
+            // can never render as a blank highlighted row. Returning null tells
+            // Select2 to hide that option entirely.
+            templateResult: function (data) {
+                // Hide only empty leaf options (the placeholder); keep optgroup
+                // labels, which also have no id but carry children.
+                if ((data.id === '' || data.id == null) && !data.children) {
+                    return null;
+                }
+                return data.text;
+            },
         };
 
         // Only set a placeholder when one is provided, so Select2 treats the
