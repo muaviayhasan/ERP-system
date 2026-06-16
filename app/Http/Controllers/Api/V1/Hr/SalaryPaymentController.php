@@ -7,6 +7,7 @@ use App\Http\Requests\Hr\StoreSalaryPaymentRequest;
 use App\Http\Requests\Hr\UpdateSalaryPaymentRequest;
 use App\Http\Resources\SalaryPaymentResource;
 use App\Models\SalaryPayment;
+use App\Services\Finance\SalaryPaymentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,10 @@ class SalaryPaymentController extends ApiController
     protected array $searchable = ['payroll_month', 'transaction_ref', 'role_label', 'department_label'];
     protected array $sortable = ['id', 'payroll_month', 'net_salary', 'status', 'processed_at', 'created_at'];
     protected array $includable = ['employee', 'salaryStructure'];
+
+    public function __construct(private readonly SalaryPaymentService $salaryPayments)
+    {
+    }
 
     public function index(Request $request): JsonResponse
     {
@@ -29,9 +34,9 @@ class SalaryPaymentController extends ApiController
 
     public function store(StoreSalaryPaymentRequest $request): JsonResponse
     {
-        $payment = SalaryPayment::create($request->validated());
+        $payment = $this->salaryPayments->create($request->validated(), $request->user()?->id);
 
-        return $this->respondCreated(SalaryPaymentResource::make($payment), 'Salary payment created successfully.');
+        return $this->respondCreated(SalaryPaymentResource::make($payment), 'Salary payment recorded and posted to the ledger.');
     }
 
     public function show(SalaryPayment $salaryPayment): JsonResponse

@@ -17,5 +17,6 @@ Route::apiResource('exams', ExamController::class);
 Route::apiResource('exam-schedules', ExamScheduleController::class);
 Route::apiResource('exam-results', ExamResultController::class);
 Route::apiResource('grade-scales', GradeScaleController::class);
+Route::post('student-gpas/calculate', [StudentGpaController::class, 'calculate'])->name('student-gpas.calculate');
 Route::apiResource('student-gpas', StudentGpaController::class);
 Route::apiResource('result-cards', ResultCardController::class);

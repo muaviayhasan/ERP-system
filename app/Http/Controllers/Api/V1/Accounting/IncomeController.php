@@ -7,6 +7,7 @@ use App\Http\Requests\Accounting\StoreIncomeRequest;
 use App\Http\Requests\Accounting\UpdateIncomeRequest;
 use App\Http\Resources\IncomeResource;
 use App\Models\Income;
+use App\Services\Finance\IncomeService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,10 @@ class IncomeController extends ApiController
     protected array $searchable = ['reference_no', 'title', 'subtitle'];
     protected array $sortable = ['id', 'reference_no', 'title', 'amount', 'income_date', 'created_at'];
     protected array $includable = ['category', 'campus', 'createdBy'];
+
+    public function __construct(private readonly IncomeService $incomes)
+    {
+    }
 
     public function index(Request $request): JsonResponse
     {
@@ -29,9 +34,9 @@ class IncomeController extends ApiController
 
     public function store(StoreIncomeRequest $request): JsonResponse
     {
-        $income = Income::create($request->validated());
+        $income = $this->incomes->create($request->validated(), $request->user()?->id);
 
-        return $this->respondCreated(IncomeResource::make($income), 'Income created successfully.');
+        return $this->respondCreated(IncomeResource::make($income), 'Income created and posted to the ledger.');
     }
 
     public function show(Income $income): JsonResponse

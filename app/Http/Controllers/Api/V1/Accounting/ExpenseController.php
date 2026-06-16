@@ -7,6 +7,7 @@ use App\Http\Requests\Accounting\StoreExpenseRequest;
 use App\Http\Requests\Accounting\UpdateExpenseRequest;
 use App\Http\Resources\ExpenseResource;
 use App\Models\Expense;
+use App\Services\Finance\ExpenseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,10 @@ class ExpenseController extends ApiController
     protected array $searchable = ['reference_no', 'title', 'payee'];
     protected array $sortable = ['id', 'reference_no', 'title', 'amount', 'expense_date', 'created_at'];
     protected array $includable = ['category', 'campus', 'approver', 'createdBy'];
+
+    public function __construct(private readonly ExpenseService $expenses)
+    {
+    }
 
     public function index(Request $request): JsonResponse
     {
@@ -29,9 +34,9 @@ class ExpenseController extends ApiController
 
     public function store(StoreExpenseRequest $request): JsonResponse
     {
-        $expense = Expense::create($request->validated());
+        $expense = $this->expenses->create($request->validated(), $request->user()?->id);
 
-        return $this->respondCreated(ExpenseResource::make($expense), 'Expense created successfully.');
+        return $this->respondCreated(ExpenseResource::make($expense), 'Expense created and posted to the ledger.');
     }
 
     public function show(Expense $expense): JsonResponse

@@ -30,6 +30,8 @@ class EnsureApiPermission
         'store' => 'create',
         'update' => 'edit',
         'destroy' => 'delete',
+        // Domain actions on custom (non-CRUD) routes map to a CRUD verb.
+        'calculate' => 'edit',
     ];
 
     public function handle(Request $request, Closure $next): Response

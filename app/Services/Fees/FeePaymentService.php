@@ -8,6 +8,7 @@ use App\Models\FeePayment;
 use App\Models\FeeReceipt;
 use App\Models\PendingFee;
 use App\Models\StudentFeeAssignment;
+use App\Services\Finance\LedgerService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -25,6 +26,10 @@ use Illuminate\Support\Str;
  */
 class FeePaymentService
 {
+    public function __construct(private readonly LedgerService $ledger)
+    {
+    }
+
     public function record(array $data, ?int $actorId = null): FeePayment
     {
         return DB::transaction(function () use ($data, $actorId) {
@@ -71,6 +76,18 @@ class FeePaymentService
                 $this->postLedgerCredit($assignment, $payment, $amountPaid, $pending, $actorId);
                 $this->refreshPendingFee($assignment, $pending);
             }
+
+            // General ledger (source of truth): record fee income.
+            $this->ledger->post('Tuition Fees Receivable', 'income', [
+                'type' => 'fee',
+                'credit' => $amountPaid,
+                'description' => 'Fee payment '.$payment->transaction_id,
+                'student_id' => $payment->student_id,
+                'campus_id' => $assignment?->campus_id,
+                'reference_no' => $payment->transaction_id,
+                'source_module' => 'fee-payments',
+                'created_by' => $actorId,
+            ]);
 
             return $payment->fresh(['receipt']);
         });
