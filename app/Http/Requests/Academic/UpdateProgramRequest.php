@@ -21,6 +21,8 @@ class UpdateProgramRequest extends FormRequest
             'code' => ['sometimes', 'required', 'string', 'max:255', Rule::unique('programs', 'code')->ignore($id)],
             'degree_level' => ['nullable', 'string', 'max:255'],
             'department_id' => ['nullable', 'integer', 'exists:departments,id'],
+            'campuses' => ['nullable', 'array'],
+            'campuses.*' => ['integer', 'exists:campuses,id'],
             'faculty' => ['nullable', 'string', 'max:255'],
             'multi_department_access' => ['nullable', 'boolean'],
             'total_years' => ['nullable', 'numeric'],

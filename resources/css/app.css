@@ -147,7 +147,9 @@ button:disabled,
 }
 
 .select2-container--default.select2-container--focus .select2-selection--single,
-.select2-container--default.select2-container--open .select2-selection--single {
+.select2-container--default.select2-container--open .select2-selection--single,
+.select2-container--default.select2-container--focus .select2-selection--multiple,
+.select2-container--default.select2-container--open .select2-selection--multiple {
     border-color: #004ac6;
     box-shadow: 0 0 0 3px rgba(0, 74, 198, 0.12);
 }
@@ -204,15 +206,79 @@ button:disabled,
 .select2-container--default .select2-selection--single .select2-selection__placeholder { color: #737686; }
 .select2-container--default .select2-selection--single .select2-selection__clear { margin-right: 1.25rem; color: #737686; }
 
+/* Match the single-select control: fixed 42px height, chips centered vertically. */
 .select2-container--default .select2-selection--multiple {
     min-height: 42px;
     border: 1px solid #c3c6d7;
     border-radius: 0.5rem;
+    background-color: #ffffff;
+    padding: 5px 8px !important;   /* vertical padding so wrapped rows breathe */
+    display: flex;
+    align-items: center;
 }
 
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+}
+
+/* Select2 4.1 absolutely-positions the "×" button at the chip's left edge, so
+   reserve room with padding-left and let the button fill that gutter. */
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
     background-color: #d0e1fb;
     border: none;
     color: #004ac6;
     border-radius: 0.375rem;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 10px 0 26px;
+    margin: 0;
+    font-size: 13px;
+    position: relative;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+    padding: 0;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 22px;
+    margin: 0;
+    border: none;            /* drop the default divider line */
+    border-radius: 0.375rem 0 0 0.375rem;
+    padding: 0;
+    color: #004ac6;
+    font-size: 15px;
+    line-height: 1;
+    display: flex;
+    align-items: center;     /* vertically centre the × */
+    justify-content: center; /* even left/right spacing around the × */
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover,
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus {
+    background: rgba(0, 74, 198, 0.12);
+    color: #003ea8;
+    outline: none;
+}
+
+/* The inline search field aligns with the chips without adding extra height. */
+.select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field {
+    margin: 0;
+    height: 26px;
+    line-height: 26px;
+    color: #191c1e;
+}
+
+.select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field::placeholder {
+    color: #737686;
 }

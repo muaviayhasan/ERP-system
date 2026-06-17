@@ -19,6 +19,8 @@ class StoreDepartmentRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'institution_type' => ['nullable', 'string', 'max:255'],
             'campus_id' => ['nullable', 'integer', 'exists:campuses,id'],
+            'campuses' => ['nullable', 'array'],
+            'campuses.*' => ['integer', 'exists:campuses,id'],
             'hod_user_id' => ['nullable', 'integer', 'exists:users,id'],
             'semester_system' => ['nullable', 'boolean'],
             'credit_hour_system' => ['nullable', 'boolean'],

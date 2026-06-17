@@ -34,6 +34,8 @@ class UpdateTeacherRequest extends FormRequest
             'max_workload_hours' => ['nullable', 'numeric'],
             'joining_date' => ['nullable', 'date'],
             'status' => ['nullable', 'in:active,inactive'],
+            'programs' => ['nullable', 'array'],
+            'programs.*' => ['integer', 'exists:programs,id'],
         ];
     }
 }

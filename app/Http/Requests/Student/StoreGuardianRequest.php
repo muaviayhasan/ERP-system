@@ -26,6 +26,8 @@ class StoreGuardianRequest extends FormRequest
             'phone_verified' => ['nullable', 'boolean'],
             'status' => ['nullable', 'in:active,inactive'],
             'user_id' => ['nullable', 'integer', 'exists:users,id'],
+            'students' => ['nullable', 'array'],
+            'students.*' => ['integer', 'exists:students,id'],
         ];
     }
 }

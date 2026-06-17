@@ -19,7 +19,10 @@ function initSelect2(root) {
 
         // Anchor the dropdown to an explicit container (drawer/modal) or the
         // field's own wrapper — never <body> (Select2 positioning bug).
-        let $parent = $el.closest('[data-select2-parent]');
+        // Search ANCESTORS only: `closest()` would otherwise match the <select>
+        // itself when the marker sits on the field (e.g. multi-selects), which
+        // appends the dropdown inside the hidden <select> so the options never show.
+        let $parent = $el.parent().closest('[data-select2-parent]');
         if (!$parent.length) {
             $parent = $el.parent();
             if ($parent.css('position') === 'static') {

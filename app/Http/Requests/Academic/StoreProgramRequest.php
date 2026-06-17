@@ -18,6 +18,8 @@ class StoreProgramRequest extends FormRequest
             'code' => ['required', 'string', 'max:255', 'unique:programs,code'],
             'degree_level' => ['nullable', 'string', 'max:255'],
             'department_id' => ['nullable', 'integer', 'exists:departments,id'],
+            'campuses' => ['nullable', 'array'],
+            'campuses.*' => ['integer', 'exists:campuses,id'],
             'faculty' => ['nullable', 'string', 'max:255'],
             'multi_department_access' => ['nullable', 'boolean'],
             'total_years' => ['nullable', 'numeric'],
