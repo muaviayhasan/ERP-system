@@ -83,6 +83,7 @@ trait HandlesResourceQuery
 
     protected function perPage(Request $request): int
     {
-        return min(max((int) $request->input('per_page', 15), 1), 100);
+        // Client may override via ?per_page=; otherwise use the configured default.
+        return min(max((int) $request->input('per_page', per_page()), 1), 100);
     }
 }

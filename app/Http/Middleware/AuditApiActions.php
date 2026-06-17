@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\ActivityLog;
+use App\Support\Audit;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -35,7 +36,8 @@ class AuditApiActions
 
     private function shouldLog(Request $request, Response $response): bool
     {
-        return in_array($request->method(), ['POST', 'PUT', 'PATCH', 'DELETE'], true)
+        return Audit::enabled()
+            && in_array($request->method(), ['POST', 'PUT', 'PATCH', 'DELETE'], true)
             && $response->getStatusCode() >= 200
             && $response->getStatusCode() < 300;
     }

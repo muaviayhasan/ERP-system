@@ -500,5 +500,149 @@ full API reference.
 > checks against the booted HTTP kernel.
 
 ---
+## 1\. System Core Screens
 
-END OF DOCUMENT
+1.  Dashboard Screen
+2.  Institute Profile Screen
+3.  Campus Management Screen
+4.  Academic Year Management Screen
+
+* * *
+
+## 2\. Academic Structure Management
+
+5.  Class Management Screen
+6.  Section Management Screen
+7.  Department Management Screen
+8.  Program Management Screen
+9.  Semester Management Screen
+10.  Subject Management Screen
+11.  Course Management Screen
+12.  Batch Management Screen
+
+* * *
+
+## 3\. Admission & Student Management
+
+13.  Student Admission Screen
+14.  Student Management Screen
+15.  Student Profile Screen
+16.  Student Promotion Screen
+17.  Student Documents Screen
+
+* * *
+
+## 4\. Guardian & Relationship Management
+
+18.  Guardian Management Screen
+
+* * *
+
+## 5\. Teacher & Staff Management
+
+19.  Teacher Management Screen
+20.  Teacher Profile Screen
+21.  Teacher Assignment Screen
+22.  Staff Management Screen
+
+* * *
+
+## 6\. Academic Operations
+
+23.  Timetable Management Screen
+24.  Attendance Management Screen
+25.  Exam Management Screen _(optional future extension if needed)_
+26.  Result Management Screen _(optional future extension if needed)_
+
+* * *
+
+## 7\. Fee & Financial System (Core ERP Engine)
+
+27.  Fee Category Management Screen
+28.  Fee Structure Management Screen
+29.  Fee Plan Management Screen
+30.  Student Fee Assignment Screen
+31.  Fee Collection Screen
+32.  Fee Receipt Screen
+33.  Pending Fee Management Screen
+34.  Installment Management Screen
+35.  Student Fee Ledger Screen
+
+* * *
+
+## 8\. Scholarship & Financial Aid
+
+36.  Scholarship Management Screen
+37.  Scholarship Approval Screen
+
+* * *
+
+## 9\. Fine & Penalty System
+
+38.  Fine Management Screen
+
+* * *
+
+## 10\. Refund & Adjustment System
+
+39.  Refund Management Screen
+
+* * *
+
+## 11\. Reports & Financial Intelligence
+
+40.  Reports Dashboard Screen
+41.  Fee Collection Report Screen
+42.  Attendance Report Screen
+43.  Academic Performance Report Screen
+
+* * *
+
+## 12\. HR System (Teachers + Staff)
+
+44.  Teacher Profile Screen (already included above)
+45.  Staff Payroll Screen _(can be added later if needed)_
+46.  Salary Management Screen _(optional extension)_
+
+* * *
+
+## 13\. Communication & Notifications
+
+47.  Notification Management Screen
+48.  Announcement / Notice Board Screen
+49.  Messaging Screen (Parent, Student, Teacher communication)
+
+* * *
+
+## 14\. Library System (Optional Module)
+
+50.  Book Management Screen
+51.  Book Issue / Return Screen
+52.  Library Fine Screen
+
+* * *
+
+## 15\. Transport System (Optional Module)
+
+53.  Transport Management Screen
+54.  Route Management Screen
+55.  Vehicle Assignment Screen
+
+* * *
+
+## 16\. Hostel Management (Optional Module)
+
+56.  Hostel Management Screen
+57.  Room Management Screen
+58.  Hostel Fee Screen
+
+* * *
+
+## 17\. System Administration
+
+59.  User Management Screen
+60.  Role & Permission Management Screen
+61.  Activity Logs Screen
+62.  Settings Screen
+63.  Login Screen
+64.  Forgot Password Screen

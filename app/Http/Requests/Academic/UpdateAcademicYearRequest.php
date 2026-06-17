@@ -18,6 +18,8 @@ class UpdateAcademicYearRequest extends FormRequest
             'start_date' => ['sometimes', 'required', 'date'],
             'end_date' => ['sometimes', 'required', 'date'],
             'scope' => ['nullable', 'in:all_campuses,specific_campuses'],
+            'campuses' => ['nullable', 'array'],
+            'campuses.*' => ['integer', 'exists:campuses,id'],
             'status' => ['nullable', 'string', 'max:255'],
             'link_fee_structure' => ['nullable', 'boolean'],
             'auto_roll_attendance' => ['nullable', 'boolean'],

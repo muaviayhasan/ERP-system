@@ -21,12 +21,20 @@
     :class="sidebarOpen && 'translate-x-0'">
 
     {{-- Brand --}}
+    @php
+        $brandName = setting('general', 'institution_name', config('app.name', 'EduCore ERP'));
+        $brandLogo = setting('general', 'light_logo');
+    @endphp
     <div class="mb-xl flex items-center gap-sm px-1">
-        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+        <div class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-primary text-white">
+            @if ($brandLogo)
+                <img src="{{ Storage::url($brandLogo) }}" alt="{{ $brandName }}" class="h-full w-full object-cover"/>
+            @else
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+            @endif
         </div>
-        <div>
-            <h1 class="font-headline-lg text-headline-lg font-bold text-primary leading-tight">EduCore ERP</h1>
+        <div class="min-w-0">
+            <h1 class="truncate font-headline-lg text-headline-lg font-bold text-primary leading-tight">{{ $brandName }}</h1>
             <p class="text-label-sm uppercase tracking-wider text-on-surface-variant">Admin Panel</p>
         </div>
         <button @click="sidebarOpen = false" class="ml-auto rounded-lg p-1 text-on-surface-variant hover:bg-surface-container-high lg:hidden">
@@ -82,13 +90,11 @@
             <span class="material-symbols-outlined">help</span>
             <span class="font-label-md text-label-md">Help &amp; Docs</span>
         </a>
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="flex w-full items-center gap-md rounded-lg px-md py-sm text-on-surface-variant transition-colors hover:bg-surface-container-high">
-                <span class="material-symbols-outlined">logout</span>
-                <span class="font-label-md text-label-md">Sign Out</span>
-            </button>
-        </form>
+        <button type="button" @click="$dispatch('open-logout-modal')"
+                class="flex w-full cursor-pointer items-center gap-md rounded-lg px-md py-sm text-on-surface-variant transition-colors hover:bg-surface-container-high">
+            <span class="material-symbols-outlined">logout</span>
+            <span class="font-label-md text-label-md">Sign Out</span>
+        </button>
         <button class="mt-md flex w-full items-center justify-center gap-xs rounded-lg bg-primary px-md py-sm font-label-md text-white transition-all hover:opacity-90 active:scale-95">
             <span class="material-symbols-outlined text-[18px]">support_agent</span>
             Support Ticket

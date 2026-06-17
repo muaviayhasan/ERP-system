@@ -1,5 +1,9 @@
 @php
-    $selectedRoles = old('roles', isset($user) ? $user->roles->pluck('name')->all() : []);
+    $defaultRole = setting('user_defaults', 'default_role');
+    $selectedRoles = old('roles', isset($user)
+        ? $user->roles->pluck('name')->all()
+        : ($defaultRole ? [$defaultRole] : []));
+    $defaultStatus = setting('user_defaults', 'default_status', 'active');
     $inputClass = 'w-full rounded-lg border border-outline-variant bg-white px-md py-2 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20';
 @endphp
 
@@ -24,7 +28,7 @@
         <label class="text-label-sm font-bold text-on-surface-variant">Status <span class="text-error">*</span></label>
         <select name="status" required class="{{ $inputClass }}">
             @foreach (['active', 'inactive', 'suspended', 'pending'] as $st)
-                <option value="{{ $st }}" @selected(old('status', $user->status ?? 'active') === $st)>{{ ucfirst($st) }}</option>
+                <option value="{{ $st }}" @selected(old('status', $user->status ?? $defaultStatus) === $st)>{{ ucfirst($st) }}</option>
             @endforeach
         </select>
     </div>

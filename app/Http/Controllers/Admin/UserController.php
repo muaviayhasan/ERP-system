@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Support\PasswordPolicy;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
 
@@ -45,7 +45,7 @@ class UserController extends Controller implements HasMiddleware
         }
 
         return view('admin.users.index', [
-            'users' => $query->latest('id')->paginate(15)->withQueryString(),
+            'users' => $query->latest('id')->paginate(per_page())->withQueryString(),
             'roles' => Role::orderBy('name')->pluck('name'),
         ]);
     }
@@ -119,8 +119,8 @@ class UserController extends Controller implements HasMiddleware
             'phone' => ['nullable', 'string', 'max:50'],
             'status' => ['required', Rule::in(['active', 'inactive', 'suspended', 'pending'])],
             'password' => $id
-                ? ['nullable', 'confirmed', Password::min(8)]
-                : ['required', 'confirmed', Password::min(8)],
+                ? ['nullable', 'confirmed', PasswordPolicy::rule()]
+                : ['required', 'confirmed', PasswordPolicy::rule()],
             'roles' => ['nullable', 'array'],
             'roles.*' => ['string', 'exists:roles,name'],
         ]);

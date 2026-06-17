@@ -46,12 +46,10 @@
                     <span class="material-symbols-outlined text-[18px]">settings</span> Settings
                 </a>
                 <div class="my-1 border-t border-outline-variant"></div>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="flex w-full items-center gap-sm px-md py-2 text-left text-label-md text-error hover:bg-error-container/30">
-                        <span class="material-symbols-outlined text-[18px]">logout</span> Sign Out
-                    </button>
-                </form>
+                <button type="button" @click="open = false; $dispatch('open-logout-modal')"
+                        class="flex w-full cursor-pointer items-center gap-sm px-md py-2 text-left text-label-md text-error hover:bg-error-container/30">
+                    <span class="material-symbols-outlined text-[18px]">logout</span> Sign Out
+                </button>
             </div>
         </div>
     </div>

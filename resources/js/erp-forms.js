@@ -31,9 +31,9 @@ function initSelect2(root) {
             width: '100%',
             allowClear: this.hasAttribute('data-allow-clear'),
             dropdownParent: $parent,
-            // Show the search box only for longer lists (avoids an empty bar on
-            // short selects); searchable when it actually helps.
-            minimumResultsForSearch: 8,
+            // Searchable by default; opt out per-field with data-no-search
+            // (e.g. very short fixed lists where a search bar adds no value).
+            minimumResultsForSearch: this.hasAttribute('data-no-search') ? Infinity : 0,
             // Drop the empty placeholder <option> from the results list so it
             // can never render as a blank highlighted row. Returning null tells
             // Select2 to hide that option entirely.

@@ -97,7 +97,9 @@
                                 </span>
                             </td>
                             <td class="px-lg py-3 text-label-md text-on-surface-variant">
-                                {{ $user->last_login_at?->diffForHumans() ?? 'Never' }}
+                                <span @if ($user->last_login_at) title="{{ format_datetime($user->last_login_at) }}" @endif>
+                                    {{ $user->last_login_at?->diffForHumans() ?? 'Never' }}
+                                </span>
                             </td>
                             <td class="px-lg py-3">
                                 <div class="flex items-center justify-end gap-1">
